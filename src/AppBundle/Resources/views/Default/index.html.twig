@@ -1,0 +1,91 @@
+{% extends "::base.html.twig" %}
+
+{% block javascripts %}
+    {% spaceless %}
+        <script src="{{asset('js/jquery-2.1.4.min.js')}}"></script>
+        <script src="{{asset('js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('js/socket.io.js')}}"></script>
+        <script src="{{asset('js/chat.js')}}"></script>
+        <script id="message-template" type="text/x-custom-template">
+            <li class="media">
+                <div class="media-body">
+                    <div class="media">
+                        <a href="" class="pull-left">
+                            <img data-img src="" class="media-object img-circle ">
+                        </a>
+                        <div class="media-body">
+                            <div data-msg></div>
+                            <small data-profile class="text-muted"></small>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </script>
+        <script id="joined-template" type="text/x-custom-template">
+            <li class="media">
+                <div class="media-body">
+                    <div class="media">
+                        <a href="" class="pull-left">
+                            <img data-img src="" class="media-object img-circle ">
+                        </a>
+                        <div class="media-body">
+                            <small data-profile class="text-muted"></small>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </script>
+    {% endspaceless %}
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/bootstrap-theme.css')}}" />
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="container">
+        <div class="row " style="padding-top:40px;">
+            <div class="col-md-8">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        RECENT CHAT HISTORY
+                    </div>
+                    <div class="panel-body">
+                        <ul class="media-list" id="messages" style="height: 400px;overflow-y: scroll;">
+                            {%for chat in chats%}
+                            <li class="media">
+                                <div class="media-body">
+                                    <div class="media">
+                                        <a href="" class="pull-left">
+                                            <img data-img src="http://www.gravatar.com/avatar/{{chat.hash}}?d=mm&s=20" class="media-object img-circle ">
+                                        </a>
+                                        <div class="media-body">
+                                            <div data-msg>{{chat.message}}</div>
+                                            <small data-profile class="text-muted">{{chat.nickname}} | {{((chat.id/1000)|round)|date('Y/m/d H:i:s')}}</small>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {%endfor%}
+                        </ul>
+                    </div>
+                    <form id="message-form">
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <span class="input-group-addon"><img src="http://www.gravatar.com/avatar/{{profile.hash}}?d=mm&s=20" /></span>
+                                <input id="message" type="text" placeholder="Enter Message" class="form-control">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info">SEND</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}
